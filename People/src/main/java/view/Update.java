@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Component;
 import static utils.DataValidation.calculateNifLetter;
 import static utils.DataValidation.isLetter;
 import static utils.DataValidation.isNumber;
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -29,6 +31,24 @@ public class Update extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        
+        //----------------------------
+        //para cambiar los "..." de dateOfBirth por "Select a date":
+        JComponent datePickerComponent = (JComponent) dateOfBirth;
+        
+        for (Component comp : datePickerComponent.getComponents()) {
+            
+            if (comp instanceof JButton) {
+                
+                JButton button = (JButton) comp;
+                button.setText("Select a date");
+                //esto podríamos hacerlo desde la parte gráfica tocando el
+                //componente directamente:
+                button.setPreferredSize(new java.awt.Dimension(150, 25));
+            }
+        }
+        
+        //----------------------------
         DropPhotoListener d = new DropPhotoListener(photo, this);
         DropTarget dropTarget = new DropTarget(photo, d);
         read.setVisible(false);
