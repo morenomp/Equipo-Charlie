@@ -42,6 +42,8 @@ public class Insert extends javax.swing.JDialog {
                 
                 JButton button = (JButton) comp;
                 button.setText("Select a date");
+                //esto podríamos hacerlo desde la parte gráfica tocando el
+                //componente directamente:
                 button.setPreferredSize(new java.awt.Dimension(150, 25));
             }
         }
