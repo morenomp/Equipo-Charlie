@@ -8,8 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
- * This class defines the main menu of the application. Actions that can be 
+ * This class defines the main menu of the application. Actions that can be
  * done: insert, read, delete, update, readAll.
+ *
  * @author Francesc Perez
  * @version 1.1.0
  */
@@ -17,7 +18,7 @@ public class Menu extends javax.swing.JFrame {
 
     public Menu() {
         initComponents();
-         try {
+        try {
             setIconImage(new ImageIcon(ImageIO.read(new File("images/logo.png"))).getImage());
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Application logo is not available", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
@@ -43,11 +44,15 @@ public class Menu extends javax.swing.JFrame {
     public JButton getReadAll() {
         return readAll;
     }
-    
+
     public JButton getDeleteAll() {
         return deleteAll;
     }
 
+    public JButton getCount() {
+        return count;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +70,8 @@ public class Menu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         readAll = new javax.swing.JButton();
         deleteAll = new javax.swing.JButton();
+        count = new javax.swing.JButton();
+        insert1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu - People v1.1.0");
@@ -128,9 +135,10 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 8)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Author: francesc.perez@stucom.com - Version 1.1.0");
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 10));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
@@ -162,14 +170,42 @@ public class Menu extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
         getContentPane().add(deleteAll, gridBagConstraints);
 
+        count.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        count.setText("COUNT");
+        count.setMaximumSize(new java.awt.Dimension(120, 50));
+        count.setMinimumSize(new java.awt.Dimension(120, 50));
+        count.setPreferredSize(new java.awt.Dimension(120, 50));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
+        getContentPane().add(count, gridBagConstraints);
+
+        insert1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        insert1.setText("INSERT");
+        insert1.setMaximumSize(new java.awt.Dimension(120, 50));
+        insert1.setMinimumSize(new java.awt.Dimension(120, 50));
+        insert1.setPreferredSize(new java.awt.Dimension(120, 50));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(24, 24, 12, 24);
+        getContentPane().add(insert1, gridBagConstraints);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton count;
     private javax.swing.JButton delete;
     private javax.swing.JButton deleteAll;
     private javax.swing.JButton insert;
+    private javax.swing.JButton insert1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton read;
     private javax.swing.JButton readAll;

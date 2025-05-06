@@ -110,10 +110,11 @@ public class DAOJPA implements IDAO {
         if (pC != null) {
             pC.setName(p.getName());
             pC.setDateOfBirth(p.getDateOfBirth());
-            if(p.getPhoto() != null)
+            if (p.getPhoto() != null) {
                 pC.setPhotoOnlyJPA(imageIconToBytes(p.getPhoto()));
-            else
+            } else {
                 pC.setPhotoOnlyJPA(null);
+            }
             em.getTransaction().commit();
         }
         em.close();
@@ -142,6 +143,20 @@ public class DAOJPA implements IDAO {
             em.remove(pR);
         }
         em.getTransaction().commit();
+    }
+
+    @Override
+    public int count() throws Exception {
+        EntityManager em = emf.createEntityManager();
+        String query = "SELECT p FROM Person p";
+        int count = 0;
+        List<Person> people = em.createQuery(query, Person.class).getResultList();
+        for (Person p : people) {
+            if (p.getPhotoOnlyJPA() != null) {
+                count++;
+            }
+        }
+        return count;
     }
 
 }

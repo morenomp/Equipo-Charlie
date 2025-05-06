@@ -113,6 +113,8 @@ public class ControllerImplementation implements IController, ActionListener {
             handleReadAll();
         } else if (e.getSource() == menu.getDeleteAll()) {
             handleDeleteAll();
+        } else if (e.getSource() == menu.getCount()) {
+            handleCount(); //Llamamos a la funcion
         }
     }
 
@@ -218,6 +220,7 @@ public class ControllerImplementation implements IController, ActionListener {
         menu.getDelete().addActionListener(this);
         menu.getReadAll().addActionListener(this);
         menu.getDeleteAll().addActionListener(this);
+        menu.getCount().addActionListener(this);
     }
 
     private void handleInsertAction() {
@@ -372,6 +375,20 @@ public class ControllerImplementation implements IController, ActionListener {
         if (answer == 0) {
             deleteAll();
         }
+    }
+
+    public void handleCount() {
+        try {
+            int count = dao.count();
+            if (count == 0) {
+                JOptionPane.showMessageDialog(menu, "There is no people created yet.", "Count - People v1.1.0", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(menu, "Number of registered people: " + count, "Count - People v1.1.0", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(menu, "Error counting people: " + ex.getMessage(), "Count - People v1.1.0", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     /**
