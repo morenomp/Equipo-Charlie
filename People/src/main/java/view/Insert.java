@@ -64,7 +64,7 @@ public class Insert extends javax.swing.JDialog {
     
     // Metodo para los placeholders
     private void setupPlaceholders() {
-        // Placeholder para el campo "name"
+        // Placeholder para el name
         name.setText("Enter your name");
         name.setForeground(Color.GRAY);
         name.addFocusListener(new FocusAdapter() {
@@ -84,7 +84,7 @@ public class Insert extends javax.swing.JDialog {
             }
         });
 
-        // Placeholder para el campo "nif"
+        // Placeholder para el nif
         nif.setText("Enter your NIF (8 digits)");
         nif.setForeground(Color.GRAY);
         nif.addFocusListener(new FocusAdapter() {
@@ -315,14 +315,13 @@ public class Insert extends javax.swing.JDialog {
         
         // Reset permanencia
         if (!name.isFocusOwner()) {
-        name.setForeground(Color.GRAY);
-        name.setText("Enter your name");
+            name.setForeground(Color.GRAY);
+            name.setText("Enter your name");
         }
         if (!nif.isFocusOwner()) {
             nif.setForeground(Color.GRAY);
-            nif.setText("Enter your NIF (8 digits)");
+            nif.setText("Enter your NIF");
         }
-        
         
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();
