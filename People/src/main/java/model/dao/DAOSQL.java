@@ -217,4 +217,9 @@ public class DAOSQL implements IDAO {
             f.delete();
     }
 
+    @Override
+    public int count() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
