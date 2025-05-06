@@ -306,6 +306,7 @@ public class Insert extends javax.swing.JDialog {
 
         insert.setEnabled(isNameValid && isNifValid);
     }
+    
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         nif.setEditable(true);
