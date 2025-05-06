@@ -91,7 +91,7 @@ public class Insert extends javax.swing.JDialog {
             @Override
             public void focusGained(FocusEvent e) {
                 if (name.getText().equals("Enter your name")) {
-                    name.setText("");
+                    name.setText(""); // Limpia placeholder al seleccionar
                     // Cambiamos el color del texto del placeholder usando java.awt.Color
                     name.setForeground(Color.BLACK);
                 }
@@ -99,7 +99,7 @@ public class Insert extends javax.swing.JDialog {
             @Override
             public void focusLost(FocusEvent e) {
                 if (name.getText().isEmpty()) {
-                    name.setForeground(Color.GRAY);
+                    name.setForeground(Color.GRAY); // Restaura placeholder si está vacío
                     name.setText("Enter your name");
                 }
             }
