@@ -1,6 +1,7 @@
 package view;
 
-import java.awt.Color;
+import java.awt.*;
+
 import static utils.DataValidation.calculateNifLetter;
 import static utils.DataValidation.isLetter;
 import static utils.DataValidation.isNumber;
