@@ -1,11 +1,14 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 import static utils.DataValidation.calculateNifLetter;
 import static utils.DataValidation.isLetter;
 import static utils.DataValidation.isNumber;
 
 import java.awt.dnd.DropTarget;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -52,6 +55,7 @@ public class Insert extends javax.swing.JDialog {
         DropPhotoListener d = new DropPhotoListener(photo, this);
         DropTarget dropTarget = new DropTarget(photo, d);
         insert.setEnabled(false);
+        setupPlaceholders();
     }
 
     public JButton getReset() {
@@ -76,6 +80,48 @@ public class Insert extends javax.swing.JDialog {
 
     public JLabel getPhoto() {
         return photo;
+    }
+    
+    private void setupPlaceholders() {
+        // Placeholder para name
+        name.setText("Enter your name");
+        name.setForeground(Color.GRAY);
+        name.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (name.getText().equals("Enter your name")) {
+                    name.setText("");
+                    name.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (name.getText().isEmpty()) {
+                    name.setForeground(Color.GRAY);
+                    name.setText("Enter your name");
+                }
+            }
+        });
+
+        // Placeholder para nif
+        nif.setText("Enter your NIF (8 digits)");
+        nif.setForeground(Color.GRAY);
+        nif.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (nif.getText().equals("Enter your NIF (8 digits)")) {
+                    nif.setText("");
+                    nif.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (nif.getText().isEmpty()) {
+                    nif.setForeground(Color.GRAY);
+                    nif.setText("Enter your NIF (8 digits)");
+                }
+            }
+        });
     }
 
     /**
@@ -274,11 +320,16 @@ public class Insert extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showInsert() {
-        if (!name.getText().isEmpty() && !nif.isEditable()) {
-            insert.setEnabled(true);
-        } else {
-            insert.setEnabled(false);
-        }
+        String nameText = name.getText();
+        String nifText = nif.getText();
+
+        // Valida los campos no sean placeholders o estén vacíos
+        boolean isNameValid = !nameText.isEmpty() && !nameText.equals("Enter your name");
+        boolean isNifValid = !nifText.isEmpty() 
+                            && !nifText.equals("Enter your NIF (8 digits)") 
+                            && !nif.isEditable();
+
+        insert.setEnabled(isNameValid && isNifValid);
     }
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
@@ -286,6 +337,17 @@ public class Insert extends javax.swing.JDialog {
         nif.setText("");
         name.setText("");
         photo.setIcon(null);
+        
+        // Restablece placeholders
+        if (!name.isFocusOwner()) {
+            name.setForeground(Color.GRAY);
+            name.setText("Enter your name");
+        }
+        if (!nif.isFocusOwner()) {
+            nif.setForeground(Color.GRAY);
+            nif.setText("Enter your NIF (8 digits)");
+        }
+        
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();
         ZoneId systemTimeZone = ZoneId.systemDefault();
