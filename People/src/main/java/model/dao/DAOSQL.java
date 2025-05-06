@@ -37,6 +37,7 @@ public class DAOSQL implements IDAO {
     private final String SQL_UPDATE = "UPDATE " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE() + " SET name = ?, dateOfBirth = ?, photo = ? WHERE (nif = ?);";
     private final String SQL_DELETE = "DELETE FROM " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE() + " WHERE (nif = ";
     private final String SQL_DELETE_ALL = "TRUNCATE " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE();
+    private final String SQL_COUNT = "SELECT COUNT(*) FROM " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE() + ";";
 
     public Connection connect() throws SQLException {
         Connection conn;
@@ -78,7 +79,7 @@ public class DAOSQL implements IDAO {
     }
 
     @Override
-    public ArrayList<Person> readAll() throws SQLException{
+    public ArrayList<Person> readAll() throws SQLException {
         ArrayList<Person> people = new ArrayList<>();
         Connection conn;
         Statement instruction;
@@ -213,13 +214,27 @@ public class DAOSQL implements IDAO {
         instruction.close();
         disconnect(conn);
         File file = new File(Routes.DB.getFolderPhotos() + File.separator);
-        for(File f : file.listFiles())
+        for (File f : file.listFiles()) {
             f.delete();
+        }
     }
 
     @Override
     public int count() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection conn;
+        Statement instruction;
+        ResultSet rs;
+        conn = connect();
+        instruction = conn.createStatement();
+        rs = instruction.executeQuery(SQL_COUNT);
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt(1);
+        }
+        rs.close();
+        instruction.close();
+        disconnect(conn);
+        return count;
     }
 
 }
