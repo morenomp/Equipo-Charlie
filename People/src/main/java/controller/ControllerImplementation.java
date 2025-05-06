@@ -114,7 +114,7 @@ public class ControllerImplementation implements IController, ActionListener {
         } else if (e.getSource() == menu.getDeleteAll()) {
             handleDeleteAll();
         } else if (e.getSource() == menu.getCount()) {
-            handleCount();
+            handleCount(); //Llamamos a la funcion
         }
     }
 
