@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Component;
 import java.awt.*;
 
 import static utils.DataValidation.calculateNifLetter;
