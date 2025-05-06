@@ -14,7 +14,7 @@ public class Constants {
     public static final String STORAGE_HASHMAP = "HashMap";
     public static final String STORAGE_FILE = "File";
     public static final String STORAGE_FILE_S = "File (Serialization)";
-    public static final String STORAGE_SQL = "SQL";
-    public static final String STORAGE_JPA = "JPA";
+    public static final String STORAGE_SQL = "SQL - Database";
+    public static final String STORAGE_JPA = "JPA - Database";
 
 }
