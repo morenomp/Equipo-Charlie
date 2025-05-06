@@ -85,12 +85,14 @@ public class Insert extends javax.swing.JDialog {
     private void setupPlaceholders() {
         // Placeholder para name
         name.setText("Enter your name");
+        // Cambiamos el color del fondo del placeholder usando java.awt.Color
         name.setForeground(Color.GRAY);
         name.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 if (name.getText().equals("Enter your name")) {
                     name.setText("");
+                    // Cambiamos el color del texto del placeholder usando java.awt.Color
                     name.setForeground(Color.BLACK);
                 }
             }
@@ -326,7 +328,7 @@ public class Insert extends javax.swing.JDialog {
         // Valida los campos no sean placeholders o estén vacíos
         boolean isNameValid = !nameText.isEmpty() && !nameText.equals("Enter your name");
         boolean isNifValid = !nifText.isEmpty() 
-                            && !nifText.equals("Enter your NIF (8 digits)") 
+                            && !nifText.equals("Enter your NIF") 
                             && !nif.isEditable();
 
         insert.setEnabled(isNameValid && isNifValid);
