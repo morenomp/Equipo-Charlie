@@ -185,7 +185,7 @@ public class ControllerImplementation implements IController, ActionListener {
                 stmt.executeUpdate("create database if not exists " + Routes.DB.getDbServerDB() + ";");
                 stmt.executeUpdate("create table if not exists " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE() + "("
                         + "nif varchar(9) primary key not null, "
-                        + "name varchar(50), "
+                        + "name varchar(50), " + "email varchar(50), "
                         + "dateOfBirth DATE, "
                         + "photo varchar(200) );");
                 stmt.close();
@@ -230,7 +230,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
-        Person p = new Person(insert.getNam().getText(), insert.getNif().getText());
+        Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getEmail().getText());
         if (insert.getDateOfBirth().getModel().getValue() != null) {
             p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
         }
@@ -257,6 +257,9 @@ public class ControllerImplementation implements IController, ActionListener {
                 calendar.setTime(pNew.getDateOfBirth());
                 DateModel<Calendar> dateModel = (DateModel<Calendar>) read.getDateOfBirth().getModel();
                 dateModel.setValue(calendar);
+            }
+            if (pNew.getEmail() != null) {
+                read.getEmail().setText(pNew.getEmail());
             }
             //To avoid charging former images
             if (pNew.getPhoto() != null) {
@@ -315,12 +318,15 @@ public class ControllerImplementation implements IController, ActionListener {
                 update.getPhoto().setEnabled(true);
                 update.getUpdate().setEnabled(true);
                 update.getNam().setText(pNew.getName());
+                update.getEmail().setText(pNew.getEmail());
+                //date
                 if (pNew.getDateOfBirth() != null) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(pNew.getDateOfBirth());
                     DateModel<Calendar> dateModel = (DateModel<Calendar>) update.getDateOfBirth().getModel();
                     dateModel.setValue(calendar);
                 }
+                //foto
                 if (pNew.getPhoto() != null) {
                     pNew.getPhoto().getImage().flush();
                     update.getPhoto().setIcon(pNew.getPhoto());
@@ -358,15 +364,23 @@ public class ControllerImplementation implements IController, ActionListener {
                 model.addRow(new Object[i]);
                 model.setValueAt(s.get(i).getNif(), i, 0);
                 model.setValueAt(s.get(i).getName(), i, 1);
+                //date
                 if (s.get(i).getDateOfBirth() != null) {
                     model.setValueAt(s.get(i).getDateOfBirth().toString(), i, 2);
                 } else {
                     model.setValueAt("", i, 2);
                 }
-                if (s.get(i).getPhoto() != null) {
-                    model.setValueAt("yes", i, 3);
+                //email
+                if (s.get(i).getEmail() != null) {
+                    model.setValueAt(s.get(i).getEmail().toString(), i, 3);
                 } else {
-                    model.setValueAt("no", i, 3);
+                    model.setValueAt("", i, 3);
+                }
+                //foto
+                if (s.get(i).getPhoto() != null) {
+                    model.setValueAt("yes", i, 4);
+                } else {
+                    model.setValueAt("no", i, 4);
                 }
             }
             readAll.setVisible(true);

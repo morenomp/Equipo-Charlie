@@ -21,6 +21,7 @@ public class Person implements Serializable{
     private String nif;
     private String name;
     private Date dateOfBirth;
+    private String email;
     @Transient
     private ImageIcon photo;
     @Lob
@@ -47,6 +48,11 @@ public class Person implements Serializable{
         this.name = name;
         this.nif = nif;
     }
+    public Person(String name, String nif, String email) {
+        this.name = name;
+        this.nif = nif;
+        this.email = email;
+    }
 
     /**
      * Constructor with all data
@@ -57,11 +63,13 @@ public class Person implements Serializable{
      * @param dateOfBirth
      * @param photo
      */
-    public Person(String name, String nif, Date dateOfBirth, ImageIcon photo) {
+    public Person(String name, String nif, Date dateOfBirth, String email, ImageIcon photo) {
         this.name = name;      
         this.nif = nif;
         this.dateOfBirth = dateOfBirth;
+        this.email = email;
         this.photo = photo;
+        
     }
 
     //Getters and Setters
@@ -103,6 +111,14 @@ public class Person implements Serializable{
 
     public void setPhotoOnlyJPA(byte[] photoOnlyJPA) {
         this.photoOnlyJPA = photoOnlyJPA;
+    }
+    
+     public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
         
     /**
@@ -147,7 +163,7 @@ public class Person implements Serializable{
     @Override
     public String toString() {
         return "Person {" + "Name = " + name + ", NIF = " + nif
-                + ", DateOfBirth = " + dateOfBirth + ", Photo = " + (photo!=null) + "}";
+                + ", DateOfBirth = " + dateOfBirth + ", Email = " + email + ", Photo = " + (photo!=null) + "}";
     }
 
 }

@@ -14,12 +14,13 @@ class PersonTest {
     private String nif = "12345678X";
     private String name = "John Doe";
     private Date dateOfBirth = new Date();
+    private String email = "example@gmail.com";
     private ImageIcon photo = new ImageIcon();
 
     @BeforeEach
     void setUp() {
         person = new Person(nif);
-        personWithFullData = new Person(name, nif, dateOfBirth, photo);
+        personWithFullData = new Person(name, nif, dateOfBirth, email, photo);
     }
 
     @Test

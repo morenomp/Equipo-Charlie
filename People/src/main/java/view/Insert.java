@@ -24,8 +24,9 @@ import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
 /**
- * Interface used to register a person. It is mandatory to enter at least the 
+ * Interface used to register a person. It is mandatory to enter at least the
  * NIF and the name.
+ *
  * @author Francesc Perez
  * @version 1.1.0
  */
@@ -34,15 +35,15 @@ public class Insert extends javax.swing.JDialog {
     public Insert(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         //----------------------------
         //para cambiar los "..." de dateOfBirth por "Select a date":
         JComponent datePickerComponent = (JComponent) dateOfBirth;
-        
+
         for (Component comp : datePickerComponent.getComponents()) {
-            
+
             if (comp instanceof JButton) {
-                
+
                 JButton button = (JButton) comp;
                 button.setText("Select a date");
                 //esto podríamos hacerlo desde la parte gráfica tocando el
@@ -50,7 +51,7 @@ public class Insert extends javax.swing.JDialog {
                 button.setPreferredSize(new java.awt.Dimension(150, 25));
             }
         }
-        
+
         //----------------------------
         DropPhotoListener d = new DropPhotoListener(photo, this);
         DropTarget dropTarget = new DropTarget(photo, d);
@@ -81,7 +82,11 @@ public class Insert extends javax.swing.JDialog {
     public JLabel getPhoto() {
         return photo;
     }
-    
+
+    public JTextField getEmail() {
+        return email;
+    }
+
     private void setupPlaceholders() {
         // Placeholder para name
         name.setText("Enter your name");
@@ -94,6 +99,7 @@ public class Insert extends javax.swing.JDialog {
                     name.setForeground(Color.BLACK);
                 }
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 if (name.getText().isEmpty()) {
@@ -114,6 +120,7 @@ public class Insert extends javax.swing.JDialog {
                     nif.setForeground(Color.BLACK);
                 }
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 if (nif.getText().isEmpty()) {
@@ -122,6 +129,32 @@ public class Insert extends javax.swing.JDialog {
                 }
             }
         });
+
+        // Placeholder para email
+        email.setText("Enter your email");
+        email.setForeground(Color.GRAY);
+        email.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (email.getText().equals("Enter your email")) {
+                    email.setText("");
+                    email.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (email.getText().isEmpty()) {
+                    email.setForeground(Color.GRAY);
+                    email.setText("Enter your email");
+                }
+            }
+        });
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
     }
 
     /**
@@ -144,6 +177,8 @@ public class Insert extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         dateOfBirth = new org.jdatepicker.JDatePicker();
+        email = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Insert - People v1.1.0");
@@ -155,9 +190,14 @@ public class Insert extends javax.swing.JDialog {
         insert.setMaximumSize(new java.awt.Dimension(187, 33));
         insert.setMinimumSize(new java.awt.Dimension(187, 33));
         insert.setPreferredSize(new java.awt.Dimension(187, 33));
+        insert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
@@ -209,7 +249,7 @@ public class Insert extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
@@ -292,7 +332,7 @@ public class Insert extends javax.swing.JDialog {
         jLabel2.setRequestFocusEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
@@ -315,6 +355,28 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
         getContentPane().add(dateOfBirth, gridBagConstraints);
 
+        email.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                emailKeyReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        getContentPane().add(email, gridBagConstraints);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setText("Email");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        getContentPane().add(jLabel3, gridBagConstraints);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -325,19 +387,24 @@ public class Insert extends javax.swing.JDialog {
 
         // Valida los campos no sean placeholders o estén vacíos
         boolean isNameValid = !nameText.isEmpty() && !nameText.equals("Enter your name");
-        boolean isNifValid = !nifText.isEmpty() 
-                            && !nifText.equals("Enter your NIF (8 digits)") 
-                            && !nif.isEditable();
-
-        insert.setEnabled(isNameValid && isNifValid);
+        boolean isNifValid = !nifText.isEmpty()
+                && !nifText.equals("Enter your NIF (8 digits)")
+                && !nif.isEditable();
+        // Pasamos a string
+        String emailText = email.getText();
+        // Validamos
+        boolean isEmailValid = isValidEmail(emailText) || emailText.equals("Enter your email");
+        // Insertamos los datos ya validados
+        insert.setEnabled(isNameValid && isNifValid && isEmailValid);
     }
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         nif.setEditable(true);
         nif.setText("");
         name.setText("");
+        email.setText("");
         photo.setIcon(null);
-        
+
         // Restablece placeholders
         if (!name.isFocusOwner()) {
             name.setForeground(Color.GRAY);
@@ -347,7 +414,11 @@ public class Insert extends javax.swing.JDialog {
             nif.setForeground(Color.GRAY);
             nif.setText("Enter your NIF (8 digits)");
         }
-        
+        if (!email.isFocusOwner()) {
+            email.setForeground(Color.GRAY);
+            email.setText("Enter your email");
+        }
+
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();
         ZoneId systemTimeZone = ZoneId.systemDefault();
@@ -407,11 +478,36 @@ public class Insert extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_dateOfBirthActionPerformed
 
+    private void emailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyReleased
+//        String emailKR = email.getText();
+//        if (!emailKR.isEmpty() && !emailKR.equals("Enter your email")) {
+//            if (!isValidEmail(emailKR)) {
+//                JOptionPane.showMessageDialog(this, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
+//            } 
+//        }
+        showInsert();
+    }//GEN-LAST:event_emailKeyReleased
+
+    private void insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertActionPerformed
+        String emailText = email.getText().trim(); // Obtiene el texto del campo email
+
+        // Validación del email
+        if (!emailText.isEmpty() && !emailText.equals("Enter your email")) {
+            if (!isValidEmail(emailText)) {
+                JOptionPane.showMessageDialog(this, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        showInsert();
+    }//GEN-LAST:event_insertActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdatepicker.JDatePicker dateOfBirth;
+    private javax.swing.JTextField email;
     private javax.swing.JButton insert;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField name;
