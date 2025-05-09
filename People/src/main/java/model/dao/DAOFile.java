@@ -55,7 +55,12 @@ public class DAOFile implements IDAO {
                 if (!data[3].equals("null")) {
                     photo = new ImageIcon(data[3]);
                 }
-                personToRead = new Person(data[0], data[1], date, photo);
+                String email = null;
+                if (!data[4].equals("null")){
+                    email = new String(data[4]);
+                }
+                    
+                personToRead = new Person(data[0], data[1], date, email, photo);
                 break;
             }
             line = br.readLine();
@@ -84,7 +89,11 @@ public class DAOFile implements IDAO {
             if (!data[3].equals("null")) {
                 photo = new ImageIcon(data[3]);
             }
-            people.add(new Person(data[0], data[1], date, photo));
+            String email = null;
+            if (!data[4].equals("null")){
+                email = new String(data[4]);
+            }
+            people.add(new Person(data[0], data[1], date, email, photo));
             line = br.readLine();
         }
         br.close();

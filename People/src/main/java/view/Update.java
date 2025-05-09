@@ -82,6 +82,10 @@ public class Update extends javax.swing.JDialog {
     public JButton getReset() {
         return reset;
     }
+    
+    public JTextField getEmail() {
+        return email;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -104,6 +108,8 @@ public class Update extends javax.swing.JDialog {
         reset = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         read = new javax.swing.JButton();
+        email = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Update - People v1.1.0");
@@ -122,7 +128,7 @@ public class Update extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
@@ -258,7 +264,7 @@ public class Update extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
@@ -269,7 +275,7 @@ public class Update extends javax.swing.JDialog {
         jLabel2.setText("Author: francesc.perez@stucom.com - Version 1.1.0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -283,6 +289,28 @@ public class Update extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 12);
         getContentPane().add(read, gridBagConstraints);
+
+        email.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                emailKeyReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        getContentPane().add(email, gridBagConstraints);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Email");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        getContentPane().add(jLabel4, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -318,8 +346,10 @@ public class Update extends javax.swing.JDialog {
         name.setText("");
         dateOfBirth.getModel().setValue(null);
         photo.setIcon(null); 
+        email.setText("");
         name.setEnabled(false);
         photo.setEnabled(false);
+        email.setEnabled(false);
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();
         ZoneId systemTimeZone = ZoneId.systemDefault();
@@ -352,6 +382,8 @@ public class Update extends javax.swing.JDialog {
             update.setEnabled(false);
         }else if(!nif.getText().isEmpty()){
             update.setEnabled(true);
+        }else if(!email.getText().isEmpty()) {
+            update.setEnabled(true);
         }
     }//GEN-LAST:event_nameKeyReleased
 
@@ -363,6 +395,38 @@ public class Update extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, "Se ha modificado correctamente",
                     "Modificación correcta", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_updateActionPerformed
+    
+     private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+    
+    private void showInsert() {
+        String nameText = name.getText();
+        String nifText = nif.getText();
+
+        // Valida los campos no sean placeholders o estén vacíos
+        boolean isNameValid = !nameText.isEmpty() && !nameText.equals("Enter your name");
+        boolean isNifValid = !nifText.isEmpty() 
+                            && !nifText.equals("Enter your NIF (8 digits)") 
+                            && !nif.isEditable();
+        // Pasamos a string
+        String emailText = email.getText();
+        // Validamos
+        boolean isEmailValid = isValidEmail(emailText) || emailText.equals("Enter your email");
+        // Insertamos los datos ya validados
+        update.setEnabled(isNameValid && isNifValid && isEmailValid);
+    }
+    
+    private void emailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyReleased
+//        String emailKR = email.getText();
+//        if (!emailKR.isEmpty() && !emailKR.equals("Enter your email")) {
+//            if (!isValidEmail(emailKR)) {
+//                JOptionPane.showMessageDialog(this, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
+//            } 
+//        }
+        showInsert();
+    }//GEN-LAST:event_emailKeyReleased
 
     /**
      * @param args the command line arguments
@@ -370,9 +434,11 @@ public class Update extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdatepicker.JDatePicker dateOfBirth;
+    private javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField name;
     private javax.swing.JTextField nif;
