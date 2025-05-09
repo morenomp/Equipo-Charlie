@@ -1,5 +1,6 @@
 package view;
 
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -40,6 +41,7 @@ public class ReadAll extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Read All - People v1.1.0");
@@ -50,14 +52,14 @@ public class ReadAll extends javax.swing.JDialog {
 
             },
             new String [] {
-                "NIF", "Name", "Date of Birth", "Photo"
+                "NIF", "Name", "Date of Birth", "Email", "Photo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -73,11 +75,14 @@ public class ReadAll extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 336;
+        gridBagConstraints.ipady = 193;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(24, 24, 12, 24);
+        gridBagConstraints.insets = new java.awt.Insets(24, 24, 0, 24);
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 8)); // NOI18N
@@ -86,16 +91,141 @@ public class ReadAll extends javax.swing.JDialog {
         jLabel2.setRequestFocusEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 171;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(11, 24, 12, 24);
         getContentPane().add(jLabel2, gridBagConstraints);
+
+        jButton1.setText("EXPORT DATA");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(13, 270, 0, 0);
+        getContentPane().add(jButton1, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //Que haremos?
+        /* Obtendremos los datos de la tabla. Una vez hecho esto le daremos al 
+        usuario la posibilidad de guardar toda la información visible al hacer 
+        clic en "EXPORT DATA". 
+        Tras esto se abrirá un JFileChooser, con el que el usuario podrá escoger
+        donde poner el documento CSV. Una vez tengamos esto, generaremos el documento */
+        
+        //Obtendremos la tabla con los datos de las personas
+        JTable tabla = getTable();
+
+        //-------------------
+        //RUTA DE LA CARPETA:
+        //-------------------
+        //Usarmos JFileChooser para que el usuario elija dónde guardar el CSV
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar archivo CSV");
+
+        //-------------------
+        //ARCHIVO:
+        //-------------------
+        //Obtenemos la fecha actual
+        String fechaActual = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
+        
+        //Creamos el nombre del archivo y ponemos la fecha actual en la que se 
+        //está exportando el csv
+        String nombreArchivo = "people_data_" + fechaActual + ".csv";
+        
+        //Agregaremos el nombre del archivo a "fileChooser", para qu además de 
+        //buscar la carpeta luego, se muestre el nombre completo ya
+        fileChooser.setSelectedFile(new java.io.File(nombreArchivo));
+
+        //-------------------
+        //ABRIR RUTA DE LA CARPETA:
+        //-------------------
+        //Mostramos con el JFileChooser para que el usuario elija dónde guardar
+        int seleccion = fileChooser.showSaveDialog(this);
+
+        //Si el usuario hace clic en guardar, interpretaremos que está todo okey
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            
+            //Obtenemos el archivo seleccionado
+            java.io.File archivo = fileChooser.getSelectedFile();
+            
+            try (
+                //Crearemos un escritor de texto para escribir en el archivo
+                java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(archivo))
+            ) {
+                //Obtenemos el modelo de la tabla (de JTable, la primera linea) (filas y columnas)
+                javax.swing.table.TableModel modelo = tabla.getModel();
+
+                //Escribir la primera línea: columnas
+                //--------------
+                //Le preguntaremos cuántas columnas hay (modelo.getColumnCount())
+                for (int i = 0; i < modelo.getColumnCount(); i++) {
+                    
+                    pw.print(modelo.getColumnName(i)); // Escribimos el nombre de la columna
+                    
+                    if (i < modelo.getColumnCount() - 1) {
+                        
+                        pw.print(","); // Agregamos una coma si no es la última columna
+                    }
+                }
+                pw.println(); //Saltamos a la siguiente línea
+
+                //Escribir los datos de cada fila
+                //--------------
+                //Le preguntaremos cuántas filas hay (modelo.getRowCount())
+                for (int fila = 0; fila < modelo.getRowCount(); fila++) {
+                    
+                    for (int columna = 0; columna < modelo.getColumnCount(); columna++) {
+                        
+                        //Obtenemos el valor de la celda
+                        Object valor = modelo.getValueAt(fila, columna);
+                        
+                        //Convertimos el valor en texto (si es null, ponemos vacío)
+                        String texto = (valor != null) ? valor.toString() : "";
+
+                        //Escapamos comillas dobles dentro del texto
+                        texto = texto.replace("\"", "\"\"");
+
+                        //Si el texto contiene coma o salto de línea, lo encerramos entre comillas
+                        if (texto.contains(",") || texto.contains("\n")) {
+                            
+                            texto = "\"" + texto + "\"";
+                        }
+
+                        pw.print(texto); // Escribimos el valor
+
+                        if (columna < modelo.getColumnCount() - 1) {
+                            
+                            //Agregamos una coma si no es la última columna
+                            pw.print(","); 
+                        }
+                    }
+                    //Al terminar cada fila, saltamos a la siguiente
+                    pw.println(); 
+                }
+                
+                //SI todo está correcto:
+                javax.swing.JOptionPane.showMessageDialog(this, "[OK] Datos exportados correctamente como " + nombreArchivo);
+
+            } catch (java.io.IOException ex) {
+                
+                //SI algo salió mal:
+                javax.swing.JOptionPane.showMessageDialog(this, "[X] Error al exportar los datos: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
