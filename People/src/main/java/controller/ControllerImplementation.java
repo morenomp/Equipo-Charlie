@@ -185,7 +185,9 @@ public class ControllerImplementation implements IController, ActionListener {
                 stmt.executeUpdate("create database if not exists " + Routes.DB.getDbServerDB() + ";");
                 stmt.executeUpdate("create table if not exists " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE() + "("
                         + "nif varchar(9) primary key not null, "
-                        + "name varchar(50), " + "email varchar(50), "
+                        + "name varchar(50), " 
+                        + "email varchar(50), " 
+                        + "codigoPostal varchar(9), "
                         + "dateOfBirth DATE, "
                         + "photo varchar(200) );");
                 stmt.close();
@@ -230,7 +232,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
-        Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getEmail().getText());
+        Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getEmail().getText(), insert.getPostalCode().getText());
         if (insert.getDateOfBirth().getModel().getValue() != null) {
             p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
         }
@@ -260,6 +262,9 @@ public class ControllerImplementation implements IController, ActionListener {
             }
             if (pNew.getEmail() != null) {
                 read.getEmail().setText(pNew.getEmail());
+            }
+            if (pNew.getPostalCode() != null) {
+                read.getPostalCode().setText(pNew.getPostalCode());
             }
             //To avoid charging former images
             if (pNew.getPhoto() != null) {
@@ -319,6 +324,7 @@ public class ControllerImplementation implements IController, ActionListener {
                 update.getUpdate().setEnabled(true);
                 update.getNam().setText(pNew.getName());
                 update.getEmail().setText(pNew.getEmail());
+                update.getPostalCode().setText(pNew.getPostalCode());
                 //date
                 if (pNew.getDateOfBirth() != null) {
                     Calendar calendar = Calendar.getInstance();
@@ -376,11 +382,17 @@ public class ControllerImplementation implements IController, ActionListener {
                 } else {
                     model.setValueAt("", i, 3);
                 }
+                //código postal
+                if (s.get(i).getPostalCode() != null) {
+                    model.setValueAt(s.get(i).getPostalCode(), i, 4);
+                } else {
+                    model.setValueAt("", i, 4);
+                }
                 //foto
                 if (s.get(i).getPhoto() != null) {
-                    model.setValueAt("yes", i, 4);
+                    model.setValueAt("yes", i, 5);
                 } else {
-                    model.setValueAt("no", i, 4);
+                    model.setValueAt("no", i, 5);
                 }
             }
             readAll.setVisible(true);

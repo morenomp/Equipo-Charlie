@@ -51,16 +51,23 @@ public class DAOFile implements IDAO {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                     date = dateFormat.parse(data[2]);
                 }
-                ImageIcon photo = null;
-                if (!data[3].equals("null")) {
-                    photo = new ImageIcon(data[3]);
-                }
+                //EMAIL
                 String email = null;
-                if (!data[4].equals("null")){
-                    email = new String(data[4]);
+                if (!data[3].equals("null")) {
+                    email = new String(data[3]);
                 }
-                    
-                personToRead = new Person(data[0], data[1], date, email, photo);
+                //CÓDIGO POSTAL
+                String postalCode = null;
+                if (!data[4].equals("null")) {
+                    postalCode = new String(data[4]);
+                }
+                //FOTO
+                ImageIcon photo = null;
+                if (!data[5].equals("null")) {
+                    photo = new ImageIcon(data[5]);
+                }
+
+                personToRead = new Person(data[0], data[1], date, email, postalCode, photo);
                 break;
             }
             line = br.readLine();
@@ -85,15 +92,23 @@ public class DAOFile implements IDAO {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 date = dateFormat.parse(data[2]);
             }
-            ImageIcon photo = null;
-            if (!data[3].equals("null")) {
-                photo = new ImageIcon(data[3]);
-            }
+            //EMAIL
             String email = null;
-            if (!data[4].equals("null")){
-                email = new String(data[4]);
+            if (!data[3].equals("null")) {
+                email = new String(data[3]);
             }
-            people.add(new Person(data[0], data[1], date, email, photo));
+            //CÓDIGO POSTAL
+            String postalCode = null;
+            if (!data[4].equals("null")) {
+                postalCode = new String(data[4]);
+            }
+            //FOTO
+            ImageIcon photo = null;
+            if (!data[5].equals("null")) {
+                photo = new ImageIcon(data[5]);
+            }
+
+            people.add(new Person(data[0], data[1], date, email, postalCode, photo));
             line = br.readLine();
         }
         br.close();
