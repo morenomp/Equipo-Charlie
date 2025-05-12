@@ -78,15 +78,19 @@ public class Update extends javax.swing.JDialog {
     public JLabel getPhoto() {
         return photo;
     }
+    
+    public JTextField getEmail() {
+        return email;
+    }
+    
+    public JTextField getPostalCode() {
+        return postalCode;
+    }
 
     public JButton getReset() {
         return reset;
     }
     
-    public JTextField getEmail() {
-        return email;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -110,6 +114,8 @@ public class Update extends javax.swing.JDialog {
         read = new javax.swing.JButton();
         email = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        postalCode = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Update - People v1.1.0");
@@ -128,7 +134,7 @@ public class Update extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
@@ -264,7 +270,7 @@ public class Update extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
@@ -275,7 +281,7 @@ public class Update extends javax.swing.JDialog {
         jLabel2.setText("Author: francesc.perez@stucom.com - Version 1.1.0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -284,8 +290,8 @@ public class Update extends javax.swing.JDialog {
 
         read.setText("readnoVisible");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 12);
         getContentPane().add(read, gridBagConstraints);
@@ -298,7 +304,7 @@ public class Update extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
         getContentPane().add(email, gridBagConstraints);
@@ -311,6 +317,28 @@ public class Update extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
         getContentPane().add(jLabel4, gridBagConstraints);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setText("ZIP Code");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        getContentPane().add(jLabel5, gridBagConstraints);
+
+        postalCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                postalCodeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        getContentPane().add(postalCode, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -347,9 +375,11 @@ public class Update extends javax.swing.JDialog {
         dateOfBirth.getModel().setValue(null);
         photo.setIcon(null); 
         email.setText("");
+        postalCode.setText("");
         name.setEnabled(false);
         photo.setEnabled(false);
         email.setEnabled(false);
+        postalCode.setEnabled(false);
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();
         ZoneId systemTimeZone = ZoneId.systemDefault();
@@ -384,6 +414,8 @@ public class Update extends javax.swing.JDialog {
             update.setEnabled(true);
         }else if(!email.getText().isEmpty()) {
             update.setEnabled(true);
+        }else if(!postalCode.getText().isEmpty()) {
+            update.setEnabled(true);
         }
     }//GEN-LAST:event_nameKeyReleased
 
@@ -396,37 +428,41 @@ public class Update extends javax.swing.JDialog {
                     "Modificación correcta", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_updateActionPerformed
     
-     private boolean isValidEmail(String email) {
+    private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
     }
-    
+    private boolean isValidPostalCode(int postalCode) {
+        String postalCodeRegex = "^(\\d{5})(?:[-\\s]?\\d{4})?$";
+        return Integer.toString(postalCode).matches(postalCodeRegex);
+    }
+     
     private void showInsert() {
         String nameText = name.getText();
         String nifText = nif.getText();
+        String emailText = email.getText();
+        String postalCodeText = postalCode.getText();
 
         // Valida los campos no sean placeholders o estén vacíos
         boolean isNameValid = !nameText.isEmpty() && !nameText.equals("Enter your name");
-        boolean isNifValid = !nifText.isEmpty() 
-                            && !nifText.equals("Enter your NIF (8 digits)") 
-                            && !nif.isEditable();
-        // Pasamos a string
-        String emailText = email.getText();
-        // Validamos
+        boolean isNifValid = !nifText.isEmpty()
+                && !nifText.equals("Enter your NIF (8 digits)")
+                && !nif.isEditable();
         boolean isEmailValid = isValidEmail(emailText) || emailText.equals("Enter your email");
+        boolean isPostalCodeValid = !postalCodeText.isEmpty() && !postalCodeText.equals("Enter your Postal Code");     
+        
+        //-----------
         // Insertamos los datos ya validados
-        update.setEnabled(isNameValid && isNifValid && isEmailValid);
+        update.setEnabled(isNameValid && isNifValid && isEmailValid && isPostalCodeValid);
     }
     
     private void emailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyReleased
-//        String emailKR = email.getText();
-//        if (!emailKR.isEmpty() && !emailKR.equals("Enter your email")) {
-//            if (!isValidEmail(emailKR)) {
-//                JOptionPane.showMessageDialog(this, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
-//            } 
-//        }
         showInsert();
     }//GEN-LAST:event_emailKeyReleased
+
+    private void postalCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postalCodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_postalCodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -439,10 +475,12 @@ public class Update extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField name;
     private javax.swing.JTextField nif;
     private javax.swing.JLabel photo;
+    private javax.swing.JTextField postalCode;
     private javax.swing.JButton read;
     private javax.swing.JButton reset;
     private javax.swing.JButton update;

@@ -22,6 +22,7 @@ public class Person implements Serializable{
     private String name;
     private Date dateOfBirth;
     private String email;
+    private String postalCode; //le pondreoms "String" en lugar de "int" porque sino nos da errores
     @Transient
     private ImageIcon photo;
     @Lob
@@ -43,15 +44,18 @@ public class Person implements Serializable{
      * Constructor with mandatory data.
      * @author Fran Perez
      * @version 1.0
+     * @param name
+     * @param nif
      */
     public Person(String name, String nif) {
         this.name = name;
         this.nif = nif;
     }
-    public Person(String name, String nif, String email) {
+    public Person(String name, String nif, String email, String postalCode) {
         this.name = name;
         this.nif = nif;
         this.email = email;
+        this.postalCode = postalCode;
     }
 
     /**
@@ -61,13 +65,16 @@ public class Person implements Serializable{
      * @param name
      * @param nif
      * @param dateOfBirth
+     * @param email
+     * @param postalCode
      * @param photo
      */
-    public Person(String name, String nif, Date dateOfBirth, String email, ImageIcon photo) {
+    public Person(String name, String nif, Date dateOfBirth, String email, String postalCode, ImageIcon photo) {
         this.name = name;      
         this.nif = nif;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
+        this.postalCode = postalCode;
         this.photo = photo;
         
     }
@@ -112,7 +119,8 @@ public class Person implements Serializable{
     public void setPhotoOnlyJPA(byte[] photoOnlyJPA) {
         this.photoOnlyJPA = photoOnlyJPA;
     }
-    
+
+    //EMAIL
      public String getEmail() {
         return email;
     }
@@ -120,6 +128,16 @@ public class Person implements Serializable{
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    //CÓDIGO POSTAL
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+    
         
     /**
      * Function used to compare two Personas. There cannot be two or more people
@@ -163,7 +181,7 @@ public class Person implements Serializable{
     @Override
     public String toString() {
         return "Person {" + "Name = " + name + ", NIF = " + nif
-                + ", DateOfBirth = " + dateOfBirth + ", Email = " + email + ", Photo = " + (photo!=null) + "}";
+                + ", DateOfBirth = " + dateOfBirth + ", Email = " + email + ", PostalCode = " + postalCode + ", Photo = " + (photo!=null) + "}";
     }
 
 }
