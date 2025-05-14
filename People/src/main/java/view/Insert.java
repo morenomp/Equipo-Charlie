@@ -78,13 +78,17 @@ public class Insert extends javax.swing.JDialog {
     public JTextField getNif() {
         return nif;
     }
-
-    public JLabel getPhoto() {
-        return photo;
-    }
-
+    
     public JTextField getEmail() {
         return email;
+    }
+    
+    public JTextField getPostalCode() {
+        return postalCode;
+    }
+    
+    public JLabel getPhoto() {
+        return photo;
     }
 
     private void setupPlaceholders() {
@@ -150,11 +154,37 @@ public class Insert extends javax.swing.JDialog {
                 }
             }
         });
+        
+        // Placeholder para código postal
+        postalCode.setText("Enter your Postal Code");
+        postalCode.setForeground(Color.GRAY);
+        postalCode.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (postalCode.getText().equals("Enter your Postal Code")) {
+                    postalCode.setText("");
+                    postalCode.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (postalCode.getText().isEmpty()) {
+                    postalCode.setForeground(Color.GRAY);
+                    postalCode.setText("Enter your Postal Code");
+                }
+            }
+        });
     }
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
+    }
+
+    private boolean isValidPostalCode(String postalCode) {
+        String postalCodeRegex = "^(\\d{5})(?:[-\\s]?\\d{4})?$";
+        return postalCode.matches(postalCodeRegex);
     }
 
     /**
@@ -179,6 +209,8 @@ public class Insert extends javax.swing.JDialog {
         dateOfBirth = new org.jdatepicker.JDatePicker();
         email = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        postalCode = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Insert - People v1.1.0");
@@ -197,7 +229,7 @@ public class Insert extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
@@ -249,7 +281,7 @@ public class Insert extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
@@ -332,7 +364,7 @@ public class Insert extends javax.swing.JDialog {
         jLabel2.setRequestFocusEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
@@ -355,6 +387,11 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
         getContentPane().add(dateOfBirth, gridBagConstraints);
 
+        email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailActionPerformed(evt);
+            }
+        });
         email.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 emailKeyReleased(evt);
@@ -369,13 +406,40 @@ public class Insert extends javax.swing.JDialog {
         getContentPane().add(email, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Email");
+        jLabel3.setText("ZIP Code");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        getContentPane().add(jLabel3, gridBagConstraints);
+
+        postalCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                postalCodeActionPerformed(evt);
+            }
+        });
+        postalCode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                postalCodeKeyReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        getContentPane().add(postalCode, gridBagConstraints);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Email");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
-        getContentPane().add(jLabel3, gridBagConstraints);
+        getContentPane().add(jLabel4, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -384,18 +448,20 @@ public class Insert extends javax.swing.JDialog {
     private void showInsert() {
         String nameText = name.getText();
         String nifText = nif.getText();
+        String emailText = email.getText();
+        String postalCodeText = postalCode.getText();
 
         // Valida los campos no sean placeholders o estén vacíos
         boolean isNameValid = !nameText.isEmpty() && !nameText.equals("Enter your name");
         boolean isNifValid = !nifText.isEmpty()
                 && !nifText.equals("Enter your NIF (8 digits)")
                 && !nif.isEditable();
-        // Pasamos a string
-        String emailText = email.getText();
-        // Validamos
         boolean isEmailValid = isValidEmail(emailText) || emailText.equals("Enter your email");
+        boolean isPostalCodeValid = isValidPostalCode(postalCodeText) || postalCodeText.equals("Enter your Postal Code");
+        
+        //-----------
         // Insertamos los datos ya validados
-        insert.setEnabled(isNameValid && isNifValid && isEmailValid);
+        insert.setEnabled(isNameValid && isNifValid && isEmailValid && isPostalCodeValid);
     }
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
@@ -403,6 +469,7 @@ public class Insert extends javax.swing.JDialog {
         nif.setText("");
         name.setText("");
         email.setText("");
+        postalCode.setText("");
         photo.setIcon(null);
 
         // Restablece placeholders
@@ -417,6 +484,10 @@ public class Insert extends javax.swing.JDialog {
         if (!email.isFocusOwner()) {
             email.setForeground(Color.GRAY);
             email.setText("Enter your email");
+        }
+        if (!postalCode.isFocusOwner()) {
+            postalCode.setForeground(Color.GRAY);
+            postalCode.setText("Enter your Postal Code");
         }
 
         //We reset the calendar date to the current date ...
@@ -479,17 +550,12 @@ public class Insert extends javax.swing.JDialog {
     }//GEN-LAST:event_dateOfBirthActionPerformed
 
     private void emailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyReleased
-//        String emailKR = email.getText();
-//        if (!emailKR.isEmpty() && !emailKR.equals("Enter your email")) {
-//            if (!isValidEmail(emailKR)) {
-//                JOptionPane.showMessageDialog(this, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
-//            } 
-//        }
         showInsert();
     }//GEN-LAST:event_emailKeyReleased
 
     private void insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertActionPerformed
         String emailText = email.getText().trim(); // Obtiene el texto del campo email
+        String postalCodeText = postalCode.getText().trim(); // Obtiene el texto del campo ZIP code
 
         // Validación del email
         if (!emailText.isEmpty() && !emailText.equals("Enter your email")) {
@@ -498,8 +564,26 @@ public class Insert extends javax.swing.JDialog {
                 return;
             }
         }
+        if (!postalCodeText.isEmpty() && !postalCodeText.equals("Enter your Postal Code")) {
+            if (!isValidPostalCode(postalCodeText)) {
+                JOptionPane.showMessageDialog(this, "Invalid ZIP Code format", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
         showInsert();
     }//GEN-LAST:event_insertActionPerformed
+
+    private void postalCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postalCodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_postalCodeActionPerformed
+
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailActionPerformed
+
+    private void postalCodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_postalCodeKeyReleased
+        showInsert();
+    }//GEN-LAST:event_postalCodeKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdatepicker.JDatePicker dateOfBirth;
@@ -508,11 +592,13 @@ public class Insert extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField name;
     private javax.swing.JTextField nif;
     private javax.swing.JLabel photo;
+    private javax.swing.JTextField postalCode;
     private javax.swing.JButton reset;
     // End of variables declaration//GEN-END:variables
 }
