@@ -10,38 +10,43 @@ import javax.persistence.Transient;
 import javax.swing.ImageIcon;
 
 /**
- * Encapsulated class that defines the type of entity that will manage the application.
+ * Encapsulated class that defines the type of entity that will manage the
+ * application.
+ *
  * @author Fran Perez
  * @version 1.1.0
  */
 @Entity
-public class Person implements Serializable{
+public class Person implements Serializable {
 
-    @Id 
+    @Id
     private String nif;
     private String name;
     private Date dateOfBirth;
     private String email;
     private String postalCode; //le pondreoms "String" en lugar de "int" porque sino nos da errores
+    private String phoneNumber; //le ponemos string en vez de int para evitar errores de longitud.
     @Transient
     private ImageIcon photo;
     @Lob
     private byte[] photoOnlyJPA;
 
-    public Person(){
-        
+    public Person() {
+
     }
-    
+
     /**
      * Constructor to validate new person. Two persons cannot have the same NIF
-     * @param nif 
+     *
+     * @param nif
      */
     public Person(String nif) {
         this.nif = nif;
     }
-    
+
     /**
      * Constructor with mandatory data.
+     *
      * @author Fran Perez
      * @version 1.0
      * @param name
@@ -51,15 +56,18 @@ public class Person implements Serializable{
         this.name = name;
         this.nif = nif;
     }
-    public Person(String name, String nif, String email, String postalCode) {
+
+    public Person(String name, String nif, String email, String postalCode, String phoneNumber) {
         this.name = name;
         this.nif = nif;
         this.email = email;
         this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
     }
 
     /**
      * Constructor with all data
+     *
      * @author Fran Perez
      * @version 1.0
      * @param name
@@ -70,13 +78,13 @@ public class Person implements Serializable{
      * @param photo
      */
     public Person(String name, String nif, Date dateOfBirth, String email, String postalCode, ImageIcon photo) {
-        this.name = name;      
+        this.name = name;
         this.nif = nif;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.postalCode = postalCode;
         this.photo = photo;
-        
+
     }
 
     //Getters and Setters
@@ -112,6 +120,14 @@ public class Person implements Serializable{
         this.photo = photo;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public byte[] getPhotoOnlyJPA() {
         return photoOnlyJPA;
     }
@@ -121,14 +137,14 @@ public class Person implements Serializable{
     }
 
     //EMAIL
-     public String getEmail() {
+    public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     //CÓDIGO POSTAL
     public String getPostalCode() {
         return postalCode;
@@ -137,12 +153,12 @@ public class Person implements Serializable{
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
-    
-        
+
     /**
      * Function used to compare two Personas. There cannot be two or more people
      * with the same ID. Actually it isn't used in this project.
-     * @return 
+     *
+     * @return
      */
     @Override
     public int hashCode() {
@@ -152,10 +168,11 @@ public class Person implements Serializable{
     }
 
     /**
-     * Function used to compare two Personas in ArrayList and HashMap 
+     * Function used to compare two Personas in ArrayList and HashMap
      * structures. There cannot be two or more people with the same ID.
+     *
      * @param obj
-     * @return 
+     * @return
      */
     @Override
     public boolean equals(Object obj) {
@@ -172,16 +189,16 @@ public class Person implements Serializable{
         return Objects.equals(this.hashCode(), other.hashCode());
     }
 
-    
     /**
-     * Function sed to show person's inform by console. Only for debugging 
+     * Function sed to show person's inform by console. Only for debugging
      * pourposes.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String toString() {
         return "Person {" + "Name = " + name + ", NIF = " + nif
-                + ", DateOfBirth = " + dateOfBirth + ", Email = " + email + ", PostalCode = " + postalCode + ", Photo = " + (photo!=null) + "}";
+                + ", DateOfBirth = " + dateOfBirth + ", Email = " + email + ", PostalCode = " + postalCode + ", PhoneNumber = " + phoneNumber + ", Photo = " + (photo != null) + "}";
     }
 
 }

@@ -185,9 +185,10 @@ public class ControllerImplementation implements IController, ActionListener {
                 stmt.executeUpdate("create database if not exists " + Routes.DB.getDbServerDB() + ";");
                 stmt.executeUpdate("create table if not exists " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE() + "("
                         + "nif varchar(9) primary key not null, "
-                        + "name varchar(50), " 
-                        + "email varchar(50), " 
-                        + "codigoPostal varchar(9), "
+                        + "name varchar(50), "
+                        + "email varchar(50), "
+                        + "codigoPostal varchar(9), " 
+                        + "phoneNumber varchar(15), "
                         + "dateOfBirth DATE, "
                         + "photo varchar(200) );");
                 stmt.close();
@@ -232,7 +233,17 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
-        Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getEmail().getText(), insert.getPostalCode().getText());
+        Person p = new Person(insert.getNam().getText(), insert.getNif().getText());
+        if (!insert.getEmail().getText().equalsIgnoreCase("Enter your email")) {
+            p.setEmail(insert.getEmail().getText());
+        }
+        if (!insert.getPostalCode().getText().equalsIgnoreCase("Enter your postal code")) {
+            p.setPostalCode(insert.getPostalCode().getText());
+        }
+        if (!insert.getPhoneNumber().getText().equalsIgnoreCase("Enter your phone number")) {
+            p.setPhoneNumber(insert.getPhoneNumber().getText());
+        }
+
         if (insert.getDateOfBirth().getModel().getValue() != null) {
             p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
         }
@@ -265,6 +276,9 @@ public class ControllerImplementation implements IController, ActionListener {
             }
             if (pNew.getPostalCode() != null) {
                 read.getPostalCode().setText(pNew.getPostalCode());
+            }
+            if (pNew.getPhoneNumber() != null) {
+                read.getPhoneNumber().setText(pNew.getPhoneNumber());
             }
             //To avoid charging former images
             if (pNew.getPhoto() != null) {
@@ -325,6 +339,7 @@ public class ControllerImplementation implements IController, ActionListener {
                 update.getNam().setText(pNew.getName());
                 update.getEmail().setText(pNew.getEmail());
                 update.getPostalCode().setText(pNew.getPostalCode());
+                update.getPhoneNumber().setText(pNew.getPhoneNumber());
                 //date
                 if (pNew.getDateOfBirth() != null) {
                     Calendar calendar = Calendar.getInstance();
@@ -353,6 +368,15 @@ public class ControllerImplementation implements IController, ActionListener {
             }
             if ((ImageIcon) (update.getPhoto().getIcon()) != null) {
                 p.setPhoto((ImageIcon) update.getPhoto().getIcon());
+            }
+            if ((update.getEmail().getText()) != null) {
+                p.setEmail(update.getEmail().getText());
+            }
+            if ((update.getPostalCode().getText()) != null) {
+                p.setPostalCode(update.getPostalCode().getText());
+            }
+            if ((update.getPhoneNumber().getText()) != null) {
+                p.setPhoneNumber(update.getPhoneNumber().getText());
             }
             update(p);
             update.getReset().doClick();
@@ -388,11 +412,17 @@ public class ControllerImplementation implements IController, ActionListener {
                 } else {
                     model.setValueAt("", i, 4);
                 }
+                //numero tlf
+                if (s.get(i).getPhoneNumber() != null) {
+                    model.setValueAt(s.get(i).getPhoneNumber(), i, 5);
+                } else {
+                    model.setValueAt("", i, 5);
+                }
                 //foto
                 if (s.get(i).getPhoto() != null) {
-                    model.setValueAt("yes", i, 5);
+                    model.setValueAt("yes", i, 6);
                 } else {
-                    model.setValueAt("no", i, 5);
+                    model.setValueAt("no", i, 6);
                 }
             }
             readAll.setVisible(true);

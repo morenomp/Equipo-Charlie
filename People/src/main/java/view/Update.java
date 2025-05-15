@@ -22,6 +22,7 @@ import org.jdatepicker.JDatePicker;
 
 /**
  * Interface used to updated a person. It is mandatory to enter the NIF.
+ *
  * @author Francesc Perez
  * @version 1.1.0
  */
@@ -31,15 +32,15 @@ public class Update extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        
+
         //----------------------------
         //para cambiar los "..." de dateOfBirth por "Select a date":
         JComponent datePickerComponent = (JComponent) dateOfBirth;
-        
+
         for (Component comp : datePickerComponent.getComponents()) {
-            
+
             if (comp instanceof JButton) {
-                
+
                 JButton button = (JButton) comp;
                 button.setText("Select a date");
                 //esto podríamos hacerlo desde la parte gráfica tocando el
@@ -47,7 +48,7 @@ public class Update extends javax.swing.JDialog {
                 button.setPreferredSize(new java.awt.Dimension(150, 25));
             }
         }
-        
+
         //----------------------------
         DropPhotoListener d = new DropPhotoListener(photo, this);
         DropTarget dropTarget = new DropTarget(photo, d);
@@ -78,11 +79,11 @@ public class Update extends javax.swing.JDialog {
     public JLabel getPhoto() {
         return photo;
     }
-    
+
     public JTextField getEmail() {
         return email;
     }
-    
+
     public JTextField getPostalCode() {
         return postalCode;
     }
@@ -90,7 +91,11 @@ public class Update extends javax.swing.JDialog {
     public JButton getReset() {
         return reset;
     }
-    
+
+    public JTextField getPhoneNumber() {
+        return phoneNumber;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -116,6 +121,8 @@ public class Update extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         postalCode = new javax.swing.JTextField();
+        phoneNumber = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Update - People v1.1.0");
@@ -134,7 +141,7 @@ public class Update extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
@@ -270,7 +277,7 @@ public class Update extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
@@ -281,7 +288,7 @@ public class Update extends javax.swing.JDialog {
         jLabel2.setText("Author: francesc.perez@stucom.com - Version 1.1.0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -291,7 +298,7 @@ public class Update extends javax.swing.JDialog {
         read.setText("readnoVisible");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 12);
         getContentPane().add(read, gridBagConstraints);
@@ -340,6 +347,28 @@ public class Update extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
         getContentPane().add(postalCode, gridBagConstraints);
 
+        phoneNumber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneNumberActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        getContentPane().add(phoneNumber, gridBagConstraints);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("Phone number");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        getContentPane().add(jLabel6, gridBagConstraints);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -348,7 +377,7 @@ public class Update extends javax.swing.JDialog {
         if (nif.getText().length() == 8) {
             evt.consume();
             nif.setText(calculateNifLetter(nif.getText()));
-            nif.setEditable(false);  
+            nif.setEditable(false);
             read.doClick();
         }
     }//GEN-LAST:event_nifKeyPressed
@@ -373,13 +402,15 @@ public class Update extends javax.swing.JDialog {
         nif.setText("");
         name.setText("");
         dateOfBirth.getModel().setValue(null);
-        photo.setIcon(null); 
+        photo.setIcon(null);
         email.setText("");
         postalCode.setText("");
         name.setEnabled(false);
         photo.setEnabled(false);
         email.setEnabled(false);
         postalCode.setEnabled(false);
+        phoneNumber.setText("");
+        phoneNumber.setEnabled(false);
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();
         ZoneId systemTimeZone = ZoneId.systemDefault();
@@ -410,11 +441,11 @@ public class Update extends javax.swing.JDialog {
     private void nameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameKeyReleased
         if (name.getText().length() == 0) {
             update.setEnabled(false);
-        }else if(!nif.getText().isEmpty()){
+        } else if (!nif.getText().isEmpty()) {
             update.setEnabled(true);
-        }else if(!email.getText().isEmpty()) {
+        } else if (!email.getText().isEmpty()) {
             update.setEnabled(true);
-        }else if(!postalCode.getText().isEmpty()) {
+        } else if (!postalCode.getText().isEmpty()) {
             update.setEnabled(true);
         }
     }//GEN-LAST:event_nameKeyReleased
@@ -425,23 +456,30 @@ public class Update extends javax.swing.JDialog {
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha modificado correctamente",
-                    "Modificación correcta", JOptionPane.INFORMATION_MESSAGE);
+                "Modificación correcta", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_updateActionPerformed
-    
+
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
     }
-    private boolean isValidPostalCode(int postalCode) {
-        String postalCodeRegex = "^(\\d{5})(?:[-\\s]?\\d{4})?$";
-        return Integer.toString(postalCode).matches(postalCodeRegex);
+
+    private boolean isValidPhoneNumber(String PhoneNumber) {
+        String phoneRegex = "^\\+?[0-9]{1,4}?[-.\\s]?(\\d{1,3})?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$";
+        return PhoneNumber.matches(phoneRegex);
     }
-     
+
+    private boolean isValidPostalCode(String postalCode) {
+        String postalCodeRegex = "^(\\d{5})(?:[-\\s]?\\d{4})?$";
+        return postalCode.matches(postalCodeRegex);
+    }
+
     private void showInsert() {
         String nameText = name.getText();
         String nifText = nif.getText();
         String emailText = email.getText();
         String postalCodeText = postalCode.getText();
+        String phoneNumberText = phoneNumber.getText();
 
         // Valida los campos no sean placeholders o estén vacíos
         boolean isNameValid = !nameText.isEmpty() && !nameText.equals("Enter your name");
@@ -449,13 +487,13 @@ public class Update extends javax.swing.JDialog {
                 && !nifText.equals("Enter your NIF (8 digits)")
                 && !nif.isEditable();
         boolean isEmailValid = isValidEmail(emailText) || emailText.equals("Enter your email");
-        boolean isPostalCodeValid = !postalCodeText.isEmpty() && !postalCodeText.equals("Enter your Postal Code");     
-        
-        //-----------
-        // Insertamos los datos ya validados
-        update.setEnabled(isNameValid && isNifValid && isEmailValid && isPostalCodeValid);
+        boolean isPostalCodeValid = isValidPostalCode(postalCodeText) && !postalCodeText.equals("Enter your Postal Code");
+        boolean isPhoneNumberValid = isValidPhoneNumber(phoneNumberText) && !phoneNumberText.equalsIgnoreCase("Enter your phone number");
+                //-----------
+                // Insertamos los datos ya validados
+                update.setEnabled(isNameValid && isNifValid && isEmailValid && isPostalCodeValid && isPhoneNumberValid);
     }
-    
+
     private void emailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyReleased
         showInsert();
     }//GEN-LAST:event_emailKeyReleased
@@ -463,6 +501,10 @@ public class Update extends javax.swing.JDialog {
     private void postalCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postalCodeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_postalCodeActionPerformed
+
+    private void phoneNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneNumberActionPerformed
 
     /**
      * @param args the command line arguments
@@ -476,9 +518,11 @@ public class Update extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField name;
     private javax.swing.JTextField nif;
+    private javax.swing.JTextField phoneNumber;
     private javax.swing.JLabel photo;
     private javax.swing.JTextField postalCode;
     private javax.swing.JButton read;
