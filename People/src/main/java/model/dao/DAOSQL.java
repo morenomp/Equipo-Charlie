@@ -64,7 +64,8 @@ public class DAOSQL implements IDAO {
             String name = rs.getString("name");
             String email = rs.getString("email");
             String postalCode = rs.getString("postalCode");
-            pReturn = new Person(name, nif, email, postalCode);
+            String phoneNumber = rs.getString("phoneNumber");
+            pReturn = new Person(name, nif, email, postalCode, phoneNumber);
             Date date = rs.getDate("dateOfBirth");
             if (date != null) {
                 pReturn.setDateOfBirth(date);

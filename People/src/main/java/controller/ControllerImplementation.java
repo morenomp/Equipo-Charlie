@@ -185,8 +185,8 @@ public class ControllerImplementation implements IController, ActionListener {
                 stmt.executeUpdate("create database if not exists " + Routes.DB.getDbServerDB() + ";");
                 stmt.executeUpdate("create table if not exists " + Routes.DB.getDbServerDB() + "." + Routes.DB.getDbServerTABLE() + "("
                         + "nif varchar(9) primary key not null, "
-                        + "name varchar(50), " 
-                        + "email varchar(50), " 
+                        + "name varchar(50), "
+                        + "email varchar(50), "
                         + "codigoPostal varchar(9), "
                         + "dateOfBirth DATE, "
                         + "photo varchar(200) );");
@@ -232,7 +232,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
-        Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getEmail().getText(), insert.getPostalCode().getText());
+        Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getEmail().getText(), insert.getPostalCode().getText(), insert.getPhoneNumber().getText());
         if (insert.getDateOfBirth().getModel().getValue() != null) {
             p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
         }
@@ -265,6 +265,9 @@ public class ControllerImplementation implements IController, ActionListener {
             }
             if (pNew.getPostalCode() != null) {
                 read.getPostalCode().setText(pNew.getPostalCode());
+            }
+            if (pNew.getPhoneNumber()!= null) {
+                read.getPhoneNumber().setText(pNew.getPhoneNumber());
             }
             //To avoid charging former images
             if (pNew.getPhoto() != null) {
