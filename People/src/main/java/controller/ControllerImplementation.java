@@ -232,7 +232,17 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
-        Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getEmail().getText(), insert.getPostalCode().getText(), insert.getPhoneNumber().getText());
+        Person p = new Person(insert.getNam().getText(), insert.getNif().getText());
+        if (!insert.getEmail().getText().equalsIgnoreCase("Enter your email")) {
+            p.setEmail(insert.getEmail().getText());
+        }
+        if (!insert.getPostalCode().getText().equalsIgnoreCase("Enter your postal code")) {
+            p.setPostalCode(insert.getPostalCode().getText());
+        }
+        if (!insert.getPhoneNumber().getText().equalsIgnoreCase("Enter your phone number")) {
+            p.setPhoneNumber(insert.getPhoneNumber().getText());
+        }
+
         if (insert.getDateOfBirth().getModel().getValue() != null) {
             p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
         }
@@ -266,7 +276,7 @@ public class ControllerImplementation implements IController, ActionListener {
             if (pNew.getPostalCode() != null) {
                 read.getPostalCode().setText(pNew.getPostalCode());
             }
-            if (pNew.getPhoneNumber()!= null) {
+            if (pNew.getPhoneNumber() != null) {
                 read.getPhoneNumber().setText(pNew.getPhoneNumber());
             }
             //To avoid charging former images
