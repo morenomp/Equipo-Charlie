@@ -376,7 +376,7 @@ public class ControllerImplementation implements IController, ActionListener {
                 p.setPostalCode(update.getPostalCode().getText());
             }
             if ((update.getPhoneNumber().getText()) != null) {
-                p.setEmail(update.getPhoneNumber().getText());
+                p.setPhoneNumber(update.getPhoneNumber().getText());
             }
             update(p);
             update.getReset().doClick();
