@@ -1,5 +1,6 @@
 package view;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -27,6 +28,9 @@ public class ReadAll extends javax.swing.JDialog {
         return table;
     }
 
+    public JButton getExportData() {
+        return exportData;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,7 +45,7 @@ public class ReadAll extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        exportData = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Read All - People v1.1.0");
@@ -98,10 +102,10 @@ public class ReadAll extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(11, 24, 12, 24);
         getContentPane().add(jLabel2, gridBagConstraints);
 
-        jButton1.setText("EXPORT DATA");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        exportData.setText("EXPORT DATA");
+        exportData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                exportDataActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -109,12 +113,12 @@ public class ReadAll extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(13, 270, 0, 0);
-        getContentPane().add(jButton1, gridBagConstraints);
+        getContentPane().add(exportData, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void exportDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDataActionPerformed
         //Que haremos?
         /* Obtendremos los datos de la tabla. Una vez hecho esto le daremos al 
         usuario la posibilidad de guardar toda la información visible al hacer 
@@ -222,10 +226,10 @@ public class ReadAll extends javax.swing.JDialog {
                 javax.swing.JOptionPane.showMessageDialog(this, "[X] Error al exportar los datos: " + ex.getMessage());
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_exportDataActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton exportData;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
