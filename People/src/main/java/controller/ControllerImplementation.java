@@ -35,7 +35,9 @@ import java.util.GregorianCalendar;
 import javax.persistence.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.DateModel;
 
@@ -87,7 +89,7 @@ public class ControllerImplementation implements IController, ActionListener {
      *
      * @param e The event generated in the visual part
      */
-    @Override
+@Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dSS.getAccept()[0]) {
             handleDataStorageSelection();
@@ -109,7 +111,10 @@ public class ControllerImplementation implements IController, ActionListener {
             handleReadForUpdate();
         } else if (update != null && e.getSource() == update.getUpdate()) {
             handleUpdatePerson();
+        } else if (readAll != null && e.getSource() == readAll.getExportData()) {
+            handleExportData();
         } else if (e.getSource() == menu.getReadAll()) {
+            System.out.println("Hola");
             handleReadAll();
         } else if (e.getSource() == menu.getDeleteAll()) {
             handleDeleteAll();
@@ -118,6 +123,115 @@ public class ControllerImplementation implements IController, ActionListener {
         }
     }
 
+    private void handleExportData() {
+        System.out.println("Hola");
+        //Que haremos?
+        /* Obtendremos los datos de la tabla. Una vez hecho esto le daremos al
+        usuario la posibilidad de guardar toda la información visible al hacer
+        clic en "EXPORT DATA".
+        Tras esto se abrirá un JFileChooser, con el que el usuario podrá escoger
+        donde poner el documento CSV. Una vez tengamos esto, generaremos el documento */
+        //Obtendremos la tabla con los datos de las personas
+        JTable tabla = readAll.getTable();
+
+        //-------------------
+        //RUTA DE LA CARPETA:
+        //-------------------
+        //Usarmos JFileChooser para que el usuario elija dónde guardar el CSV
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar archivo CSV");
+
+        //-------------------
+        //ARCHIVO:
+        //-------------------
+        //Obtenemos la fecha actual
+        String fechaActual = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
+
+        //Creamos el nombre del archivo y ponemos la fecha actual en la que se
+        //está exportando el csv
+        String nombreArchivo = "people_data_" + fechaActual + ".csv";
+
+        //Agregaremos el nombre del archivo a "fileChooser", para qu además de
+        //buscar la carpeta luego, se muestre el nombre completo ya
+        fileChooser.setSelectedFile(new java.io.File(nombreArchivo));
+
+        //-------------------
+        //ABRIR RUTA DE LA CARPETA:
+        //-------------------
+        //Mostramos con el JFileChooser para que el usuario elija dónde guardar
+        int seleccion = fileChooser.showSaveDialog(null);
+
+        //Si el usuario hace clic en guardar, interpretaremos que está todo okey
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+
+            //Obtenemos el archivo seleccionado
+            java.io.File archivo = fileChooser.getSelectedFile();
+
+            try (
+                //Crearemos un escritor de texto para escribir en el archivo
+                java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(archivo))) {
+                //Obtenemos el modelo de la tabla (de JTable, la primera linea) (filas y columnas)
+                javax.swing.table.TableModel modelo = tabla.getModel();
+
+                //Escribir la primera línea: columnas
+                //--------------
+                //Le preguntaremos cuántas columnas hay (modelo.getColumnCount())
+                for (int i = 0; i < modelo.getColumnCount(); i++) {
+
+                    pw.print(modelo.getColumnName(i)); // Escribimos el nombre de la columna
+
+                    if (i < modelo.getColumnCount() - 1) {
+
+                        pw.print(","); // Agregamos una coma si no es la última columna
+                    }
+                }
+                pw.println(); //Saltamos a la siguiente línea
+
+                //Escribir los datos de cada fila
+                //--------------
+                //Le preguntaremos cuántas filas hay (modelo.getRowCount())
+                for (int fila = 0; fila < modelo.getRowCount(); fila++) {
+
+                    for (int columna = 0; columna < modelo.getColumnCount(); columna++) {
+
+                        //Obtenemos el valor de la celda
+                        Object valor = modelo.getValueAt(fila, columna);
+
+                        //Convertimos el valor en texto (si es null, ponemos vacío)
+                        String texto = (valor != null) ? valor.toString() : "";
+
+                        //Escapamos comillas dobles dentro del texto
+                        texto = texto.replace("\"", "\"\"");
+
+                        //Si el texto contiene coma o salto de línea, lo encerramos entre comillas
+                        if (texto.contains(",") || texto.contains("\n")) {
+
+                            texto = "\"" + texto + "\"";
+                        }
+
+                        pw.print(texto); // Escribimos el valor
+
+                        if (columna < modelo.getColumnCount() - 1) {
+
+                            //Agregamos una coma si no es la última columna
+                            pw.print(",");
+                        }
+                    }
+                    //Al terminar cada fila, saltamos a la siguiente
+                    pw.println();
+                }
+
+                //SI todo está correcto:
+                javax.swing.JOptionPane.showMessageDialog(null, "[OK] Datos exportados correctamente como " + nombreArchivo);
+
+            } catch (java.io.IOException ex) {
+
+                //SI algo salió mal:
+                javax.swing.JOptionPane.showMessageDialog(null, "[X] Error al exportar los datos: " + ex.getMessage());
+            }
+        }
+    }
+        
     private void handleDataStorageSelection() {
         String daoSelected = ((javax.swing.JCheckBox) (dSS.getAccept()[1])).getText();
         dSS.dispose();
@@ -389,6 +503,7 @@ public class ControllerImplementation implements IController, ActionListener {
             JOptionPane.showMessageDialog(menu, "There are not people registered yet.", "Read All - People v1.1.0", JOptionPane.WARNING_MESSAGE);
         } else {
             readAll = new ReadAll(menu, true);
+            readAll.getExportData().addActionListener(this);
             DefaultTableModel model = (DefaultTableModel) readAll.getTable().getModel();
             for (int i = 0; i < s.size(); i++) {
                 model.addRow(new Object[i]);
@@ -427,7 +542,7 @@ public class ControllerImplementation implements IController, ActionListener {
             }
             readAll.setVisible(true);
         }
-    }
+    }   
 
     public void handleDeleteAll() {
         Object[] options = {"Yes", "No"};
