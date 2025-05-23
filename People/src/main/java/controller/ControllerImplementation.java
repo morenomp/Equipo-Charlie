@@ -39,7 +39,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import model.dao.DAOSQLValidation;
 import org.jdatepicker.DateModel;
+import view.login;
 
 /**
  * This class starts the visual part of the application and programs and manages
@@ -53,7 +55,7 @@ public class ControllerImplementation implements IController, ActionListener {
 
     //Instance variables used so that both the visual and model parts can be 
     //accessed from the Controller.
-    private final DataStorageSelection dSS;
+    private DataStorageSelection dSS;
     private IDAO dao;
     private Menu menu;
     private Insert insert;
@@ -61,6 +63,7 @@ public class ControllerImplementation implements IController, ActionListener {
     private Delete delete;
     private Update update;
     private ReadAll readAll;
+    private login loginFrame;
 
     /**
      * This constructor allows the controller to know which data storage option
@@ -69,19 +72,33 @@ public class ControllerImplementation implements IController, ActionListener {
      *
      * @param dSS
      */
-    
-    public ControllerImplementation(DataStorageSelection dSS) {
-        this.dSS = dSS;
-        ((JButton) (dSS.getAccept()[0])).addActionListener(this);
+   
+    // Constructor recibe el Login (no el DataStorageSelection)
+    public ControllerImplementation(login loginFrame) {
+        this.loginFrame = loginFrame;
+        this.loginFrame.getBtnLogin().addActionListener(this); // Registrar botón de login
     }
+    
+    //Este es el anterior
+//    public ControllerImplementation(DataStorageSelection dSS) {
+//        this.dSS = dSS;
+//        ((JButton) (dSS.getAccept()[0])).addActionListener(this);
+//    }
 
     /**
      * With this method, the application is started, asking the user for the
      * chosen storage system.
      */
+    //  anterior
+//    @Override
+//    public void start() {
+//        dSS.setVisible(true);
+//    }
+    
+    // Mostrar el Login primero
     @Override
     public void start() {
-        dSS.setVisible(true);
+        loginFrame.setVisible(true); 
     }
 
     /**
@@ -90,42 +107,65 @@ public class ControllerImplementation implements IController, ActionListener {
      *
      * @param e The event generated in the visual part
      */
-@Override
+    @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == dSS.getAccept()[0]) {
+        // 1. Evento del botón de Login
+        if (e.getSource() == loginFrame.getBtnLogin()) {
+            handleLogin();
+        }
+        // 2. Eventos posteriores al login (solo si dSS existe)
+        else if (dSS != null && e.getSource() == dSS.getAccept()[0]) {
             handleDataStorageSelection();
-        } else if (e.getSource() == menu.getInsert()) {
+        } 
+        // ... Resto de eventos (insertar, leer, etc.)
+        else if (menu != null && e.getSource() == menu.getInsert()) {
             handleInsertAction();
         } else if (insert != null && e.getSource() == insert.getInsert()) {
             handleInsertPerson();
-        } else if (e.getSource() == menu.getRead()) {
+        } else if (menu != null && e.getSource() == menu.getRead()) {
             handleReadAction();
         } else if (read != null && e.getSource() == read.getRead()) {
             handleReadPerson();
-        } else if (e.getSource() == menu.getDelete()) {
+        } else if (menu != null && e.getSource() == menu.getDelete()) {
             handleDeleteAction();
         } else if (delete != null && e.getSource() == delete.getDelete()) {
             handleDeletePerson();
-        } else if (e.getSource() == menu.getUpdate()) {
+        } else if (menu != null && e.getSource() == menu.getUpdate()) {
             handleUpdateAction();
         } else if (update != null && e.getSource() == update.getRead()) {
             handleReadForUpdate();
         } else if (update != null && e.getSource() == update.getUpdate()) {
             handleUpdatePerson();
-        } else if (readAll != null && e.getSource() == readAll.getExportData()) {
-            handleExportData();
-        } else if (e.getSource() == menu.getReadAll()) {
-            System.out.println("Hola");
+        } else if (menu != null && e.getSource() == menu.getReadAll()) {
             handleReadAll();
-        } else if (e.getSource() == menu.getDeleteAll()) {
+        } else if (menu != null && e.getSource() == menu.getDeleteAll()) {
             handleDeleteAll();
-        } else if (e.getSource() == menu.getCount()) {
-            handleCount(); //Llamamos a la funcion
+        } else if (menu != null && e.getSource() == menu.getCount()) {
+            handleCount();
+        }
+    }
+    
+    private void handleLogin() {
+        // Obtener datos del login
+        String username = loginFrame.getUserField().getText();
+        String password = loginFrame.getPasswordField().getText();
+
+        // Validar contra la BBDD
+        DAOSQLValidation daoValidation = new DAOSQLValidation();
+        boolean isValid = daoValidation.validateCredentials(username, password);
+
+        if (isValid) {
+            loginFrame.dispose(); // Cerrar ventana de login
+            dSS = new DataStorageSelection(); // Abrir selección de almacenamiento
+            dSS.setVisible(true);
+            ((JButton) dSS.getAccept()[0]).addActionListener(this);
+        } else {
+            JOptionPane.showMessageDialog(loginFrame, "Usuario o contraseña incorrectos","ERROR", JOptionPane.ERROR_MESSAGE);
+
         }
     }
 
     private void handleExportData() {
-        System.out.println("Hola");
         //Que haremos?
         /* Obtendremos los datos de la tabla. Una vez hecho esto le daremos al
         usuario la posibilidad de guardar toda la información visible al hacer

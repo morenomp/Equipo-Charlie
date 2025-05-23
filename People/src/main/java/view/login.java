@@ -4,11 +4,15 @@
  */
 package view;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author mserr
  */
 public class login extends javax.swing.JFrame {
+
 
     /**
      * Creates new form login_2
@@ -16,6 +20,20 @@ public class login extends javax.swing.JFrame {
     public login() {
         initComponents();
     }
+    
+    public JTextField getUserField() {
+        return userField;
+    }
+
+    public JTextField getPasswordField() {
+        return passwordField;
+    }
+
+    public JButton getBtnLogin() {
+        return BtnLogin;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,7 +50,7 @@ public class login extends javax.swing.JFrame {
         passwordField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        getBtnLogin = new javax.swing.JButton();
+        BtnLogin = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -84,13 +102,18 @@ public class login extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(jLabel3, gridBagConstraints);
 
-        getBtnLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        getBtnLogin.setText("Start");
+        BtnLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        BtnLogin.setText("Start");
+        BtnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLoginActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        getContentPane().add(getBtnLogin, gridBagConstraints);
+        getContentPane().add(BtnLogin, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 2, 8)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -110,6 +133,10 @@ public class login extends javax.swing.JFrame {
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,7 +175,7 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton getBtnLogin;
+    private javax.swing.JButton BtnLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
